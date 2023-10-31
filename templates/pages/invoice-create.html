@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "layouts/base.html" %}
 {% block content %}
 <br>
 
@@ -76,7 +76,7 @@
             </div>
         </div>
     </div>
-
+    {% endblock %} {% block extra_js %}
 <script>
     $('table input').on("input", function () {
         var total   = []

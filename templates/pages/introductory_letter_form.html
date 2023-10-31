@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% block content %}
+{% extends "layouts/base.html" %} {% block content %}
 <style>
   .offer-letter-container {
     width: 100%;
@@ -112,7 +112,7 @@
         </div>
     </div>
   </div>
-
+  {% endblock %} {% block extra_js %}
   <script>
     // Function to update the offer letter content
     function updateOfferLetter() {

@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends "layouts/base.html" %}
 {% block content %}
 
 
@@ -81,7 +81,7 @@
         </div>
     </div>
 </form>
-
+{% endblock %} {% block extra_js %}
 <script>
     $(document).ready(function () {
         $('.remove-row').on('click', function (e) {
@@ -106,4 +106,4 @@
 
 
 
-{% endblock content %}
+{% endblock  %}

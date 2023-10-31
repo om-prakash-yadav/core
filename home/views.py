@@ -4,6 +4,7 @@ from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordRes
 from django.views.generic import CreateView
 from django.contrib.auth import logout
 
+
 from django.contrib.auth.decorators import login_required
 
 from .models import *
@@ -23,6 +24,9 @@ openai.api_key = "sk_test_51JQ5QvSIL5ZQZ2Z2"
 
 @login_required
 def index(request):
+#   user = request.user
+#   if not Company.objects.filter(user=user).exists():
+#                 return company_form_view(request)
 
   context = {
     'segment'  : 'index',
