@@ -1,0 +1,79 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+
+{% block breadcrumbs %}{% endblock breadcrumbs %}
+
+{% block content %}
+
+ 
+
+<!-- [ Main Content ] start -->
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Internal Resource Management</h1>
+  </div>
+
+  <d class="row">
+    <di class="col-lg-8">
+      <div class="row">
+        <!-- Other content -->
+
+        <div class="col-12">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">
+                <b>Document Generators</b><span></span>
+              </h5>
+              <div class="d-grid gap-2 mt-3">
+                <a
+                  name="offer_letter_btn"
+                  class="btn btn-outline-primary btn-lg"
+                  style="margin-top: 10px"
+                  href="{% url 'generate_offer_letter' %}"
+                  >Offer Letter Generator</a
+                >
+              </div>
+              <div class="d-grid gap-2 mt-3">
+                <a
+                  name="appointment_letter_btn"
+                  class="btn btn-outline-primary btn-lg"
+                  style="margin-top: 10px"
+                  href="{% url 'generate_appointment_letter' %}"
+                  >Appointment Letter Generator</a
+                >
+              </div>
+              <div class="d-grid gap-2 mt-3">
+                <a
+                  name="introductory_letter_btn"
+                  class="btn btn-outline-primary btn-lg"
+                  style="margin-top: 10px"
+                  href={% url 'generate_introductory_letter' %}
+                  >Introductory Letter Generator</a
+                >
+              </div>
+              <div class="d-grid gap-2 mt-3">
+                <a
+                  name="quotation_btn"
+                  class="btn btn-outline-primary btn-lg"
+                  style="margin-top: 10px"
+                  href="{% url 'invoice-create' %}"
+                  >Invoice Generator</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End Generator Options -->
+      </div>
+    </di>
+  </d>
+</main>
+<!-- End #main -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"
+  ><i class="bi bi-arrow-up-short"></i
+></a>
+
+  <!-- [ Main Content ] end -->
+
+{% endblock content %}

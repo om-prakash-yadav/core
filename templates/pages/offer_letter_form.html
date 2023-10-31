@@ -1,0 +1,193 @@
+{% extends 'layouts/base.html' %}
+{% load static %} {% block content %}
+<style>
+  .offer-letter-container {
+    width: 100%;
+    max-width: 800px;
+    padding: 20px;
+    margin: 0 auto;
+  }
+  .offer-details p {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+  .offer-details h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    text-decoration: underline;
+    font-size: 24px;
+  }
+</style>
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card p-4">
+        <div class="card-body">
+          {% load crispy_forms_tags %}
+          <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">{{ form.candidate_name|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.candidate_city|as_crispy_field }}</div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  {{ form.candidate_pin_code|as_crispy_field }}
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  {{ form.candidate_state|as_crispy_field }}
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">{{ form.candidate_country|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.candidate_phone|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.candidate_email|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.job_title|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.joining_date|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.salary|as_crispy_field }}</div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card p-4" id="printableArea">
+        <div class="card-body">
+          <!-- A4 Size Printable Offer Letter Rendering Code -->
+          <div class="offer-letter-container">
+            <center><h1 style="font-size: 40px">Offer Letter</h1></center>
+            <center><img src="{{company.company_logo.url}}" alt="Company Logo" style="width: 100px; height: 50px; background-size: contain;" /></center>
+            <br />
+            <div class="offer-details" style="font-size: 12px">
+              <div class="d-flex justify-content-center">
+                <p style="font-size: 10px">
+                  {{company.company_name}} | {{company.company_city}}, {{company.company_country}} | {{company.company_phone}} |
+                  {{company.company_email}}
+                </p>
+              </div>
+              <br />
+              <p>
+                <strong>Date: </strong><span class="joining-date">[Date]</span>
+              </p>
+              <br />
+
+              <br />
+              <p>Dear <span class="candidate-name">[Candidate Name]</span>,</p>
+              <br />
+              <p>
+                We are pleased to offer you the position of
+                <span id="job-title">[Job Title]</span> at our esteemed
+                organization. Your employment will commence on
+                <span class="joining-date">[Joining Date]</span>.
+              </p>
+              <p>
+                Your starting salary will be
+                <span id="salary">[Salary Amount]</span> per annum. This offer
+                is contingent upon your passing our background check and
+                providing suitable references.
+              </p>
+              <p>
+                Please confirm your acceptance of this offer by signing and
+                returning this letter by
+                <span class="joining-date">[Confirmation Date]</span>.
+              </p>
+              <br />
+              <p>We look forward to welcoming you to our team.</p>
+              <br />
+              <p>Sincerely,</p>
+              <br />
+             <p>[ Your Name ]</p>
+              <p>{{company.company_name}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-evenly">
+        <button id="generateContentBtn" class="btn btn-primary">
+          Generate Content
+        </button>
+        <input
+          class="btn bg-primary text-white"
+          type="button"
+          onclick="printDiv('printableArea')"
+          value="Print"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Function to update the offer letter content
+  function updateOfferLetter() {
+    var candidateName = $("#id_candidate_name").val();
+    var candidateCity = $("#id_candidate_city").val();
+    var candidatePinCode = $("#id_candidate_pin_code").val();
+    var candidateState = $("#id_candidate_state").val();
+    var candidateCountry = $("#id_candidate_country").val();
+    var candidatePhone = $("#id_candidate_phone").val();
+    var candidateEmail = $("#id_candidate_email").val();
+    var jobTitle = $("#id_job_title").val();
+    var joiningDate = $("#id_joining_date").val();
+    var salary = $("#id_salary").val();
+
+    // Update the content in the offer letter
+    $(".candidate-name").text(candidateName);
+    $("#candidate-city").text(candidateCity);
+    $("#candidate-pin-code").text(candidatePinCode);
+    $("#candidate-state").text(candidateState);
+    $("#candidate-country").text(candidateCountry);
+    $("#candidate-phone").text(candidatePhone);
+    $("#candidate-email").text(candidateEmail);
+    $("#job-title").text(jobTitle);
+    $(".joining-date").text(joiningDate);
+    $("#salary").text(salary);
+  }
+
+  function printDiv(divName) {
+    var printContents = document.getElementById(divName).innerHTML;
+    var originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = printContents;
+
+    window.print();
+
+    document.body.innerHTML = originalContents;
+  }
+
+  // Trigger the function on input change
+  $(document).ready(function () {
+    $("input").on("input", function () {
+      updateOfferLetter();
+    });
+  });
+
+  const csrfToken =  document.querySelector('[name=csrfmiddlewaretoken]').value;
+  document
+    .getElementById("generateContentBtn")
+    .addEventListener("click", function () {
+   
+
+      fetch("/generate_offer_letter_content/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrfToken,
+        },
+        body: JSON.stringify({
+
+         
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          // Update the A4 size page content dynamically with the generated content
+          document.getElementById("printableArea").innerHTML =
+            data.generated_content;
+        })
+        .catch((error) => console.error("Error:", error));
+    });
+</script>
+{% endblock %}

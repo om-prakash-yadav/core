@@ -1,0 +1,163 @@
+{% extends 'base.html' %} {% block content %}
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card p-4">
+        <div class="card-body">
+          {% load crispy_forms_tags %}
+          <form method="post" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="mb-3">{{ form.employee_name|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.employee_address|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.employee_city|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.employee_pin_code|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.employee_state|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.employee_country|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.employee_phone|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.employee_email|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.joining_date|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.designation|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.department|as_crispy_field }}</div>
+            <div class="mb-3">{{ form.salary|as_crispy_field }}</div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card p-4" id="printableArea">
+        <div class="card-body">
+          <!-- A4 Size Printable Appointment Letter Rendering Code -->
+          <div class="appointment-letter-container">
+            <center><h1>Appointment Letter</h1></center>
+            <div class="appointment-details">
+              <div class="d-flex justify-content-center">
+                <p style="font-size: 10px">
+                  [Company Name] | [Company Address] | [Company Phone] |
+                  [Company Email]
+                </p>
+              </div>
+              <p><strong>Date:</strong> <span id="appointment-date"></span></p>
+              <br />
+              <p>
+                <strong><span id="employee-name"></span></strong>
+              </p>
+              <p>
+                <strong><span id="employee-address"></span></strong>
+              </p>
+              <p>
+                <strong><span id="employee-city-state"></span></strong>
+              </p>
+              <p>
+                <strong><span id="employee-country-pincode"></span></strong>
+              </p>
+              <br />
+              <p>
+                Dear <strong><span id="employee-name"></span></strong>,
+              </p>
+              <p>
+                We are delighted to extend our offer for the position of
+                <strong><span id="employee-designation"></span></strong>
+                within the
+                <strong><span id="employee-department"></span></strong>
+                department at
+                <strong><span id="company-name"></span></strong>.
+              </p>
+              <br />
+              <p>
+                Your annual compensation will be
+                <strong><span id="employee-salary"></span></strong>, and your
+                employment will commence on
+                <strong><span id="appointment-date"></span></strong>.
+              </p>
+              <p>
+                We are confident that your experience and skills will greatly
+                contribute to our team's success, and we look forward to your
+                valuable contributions.
+              </p>
+              <br />
+              <p>
+                Please feel free to reach out if you have any questions or need
+                additional information. We are excited to welcome you aboard and
+                wish you a successful and fulfilling journey with us.
+              </p>
+              <br />
+              <p>Best regards,</p>
+              <p><span id="company-name"></span></p>
+              <p><span id="company-details"></span></p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-primary" onclick="printDiv('printableArea')">
+          Print
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Function to update the appointment letter content
+  function updateAppointmentLetter() {
+    var employeeName = $("#id_employee_name").val();
+    var employeeAddress = $("#id_employee_address").val();
+    var employeeCity = $("#id_employee_city").val();
+    var employeeState = $("#id_employee_state").val();
+    var employeeCountry = $("#id_employee_country").val();
+    var employeePinCode = $("#id_employee_pin_code").val();
+    var joiningDate = $("#id_joining_date").val();
+    var designation = $("#id_designation").val();
+    var department = $("#id_department").val();
+    var salary = $("#id_salary").val();
+    var companyName = $("#id_company_name").val();
+    var companyCity = $("#id_company_city").val();
+    var companyState = $("#id_company_state").val();
+    var companyCountry = $("#id_company_country").val();
+    var companyPhone = $("#id_company_phone").val();
+    var companyEmail = $("#id_company_email").val();
+
+    $("#appointment-date").text(joiningDate);
+    $("#employee-name").text(employeeName);
+    $("#employee-address").text(employeeAddress);
+    $("#employee-city-state").text(employeeCity + ", " + employeeState);
+    $("#employee-country-pincode").text(
+      employeeCountry + ", " + employeePinCode
+    );
+    $("#employee-designation").text(designation);
+    $("#employee-department").text(department);
+    $("#employee-salary").text("$" + salary);
+    $("#company-name").text(companyName);
+    $("#company-details").html(
+      companyCity +
+        ", " +
+        companyState +
+        ", " +
+        companyCountry +
+        "<br>Phone: " +
+        companyPhone +
+        "<br>Email: " +
+        companyEmail
+    );
+  }
+
+  function printDiv(divName) {
+    var printContents = document.getElementById(divName).innerHTML;
+    var originalContents = document.body.innerHTML;
+
+    document.body.innerHTML = printContents;
+
+    window.print();
+
+    document.body.innerHTML = originalContents;
+  }
+
+  // Trigger the function on input change
+  $(document).ready(function () {
+    $("input").on("input", function () {
+      updateAppointmentLetter();
+    });
+  });
+</script>
+{% endblock %}

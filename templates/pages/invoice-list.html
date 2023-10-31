@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+
+<form action="{% url 'invoice-list' %}" method="post">{% csrf_token %}
+    <div class="card p-4">
+        <header class="card-header">
+            <p class="card-header-title">
+                All Orders / Change Order Status &nbsp;<button class=" btn bg-primary">
+                    <a href="{% url 'invoice-create' %}" class="text-white">Create Invoice</a></button>
+            </p>
+        </header>
+        <div class="card-content">
+            <div class="content">
+
+                <table class="table is-fullwidth is-bordered is-hoverable is-striped">
+                    <tbody>
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>INVOICE</th>
+                                <th>CUSTOMER</th>
+                                <th>DATE</th>
+                                <th>DUE DATE</th>
+                                <th>BALANCE</th>
+                                <th>TOTAL</th>
+                                <th>STATUS</th>
+                                <th>View</th>
+                                <th>DOWNLOAD</th>
+
+                            </tr>
+                        </thead>
+                        {% for invoice in invoices %}
+                        <tr>
+                            <td><input class="checkbox" type="checkbox" value="{{invoice.id}}" name="invoice_id" size="1" />
+                            </td>
+                            <td width="1%">#{{invoice.id}}</td>
+                            <td width="9%">{{invoice.customer}}</td>
+                            <td> {{invoice.date}}</td>
+                            <td> {{invoice.due_date}} </td>
+                            <td width="1%"></td>
+                            <td>{{invoice.total_amount}}</td>
+                            <td class="level-right">
+                                {% if invoice.get_status %}
+                                <a class="button is-small is-success" href="#">Paid</a>
+                                {% else %}
+                                <a class="button is-small is-warning" href="#">Not Paid</a>
+                                {% endif %}
+                            </td>
+                            <td width="1%"><a href="{% url 'invoice-detail' id=invoice.id %}">
+                                <div class="button is-small is-info">View</div>
+                            </a></td>
+                            <td width="1%"><a href="{% url 'invoice-download' id=invoice.id %}">Download</a></td>
+                            <td>
+                                <button class="btn btn-danger remove-row" data-id="{{ invoice.id }}">Remove</button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+    <div class="card has-background-white-ter">
+        <header class="card-header">
+            <p class="card-header-title">
+                Change Order Status
+            </p>
+        </header>
+        <div class="card-content">
+            <div class="btn ">
+                <select id="status" name="status" class="form-select" >
+                    <option value="1">Paid</option>
+                    <option value="0">Not Paid</option>
+                </select>
+            </div>
+            <input  type="submit" class="btn bg-success text-white" value="Change Status" name="mybtn">
+        </div>
+    </div>
+</form>
+
+<script>
+    $(document).ready(function () {
+        $('.remove-row').on('click', function (e) {
+            e.preventDefault();
+            var invoiceId = $(this).data('id');
+            // Call an AJAX request here to remove the row
+            // Example AJAX call:
+            $.ajax({
+                type: 'POST',
+                url: '{% url "remove-invoice" %}',
+                data: {
+                    'invoice_id': invoiceId,
+                    'csrfmiddlewaretoken': '{{ csrf_token }}'
+                },
+                success: function () {
+                    location.reload(); // Refresh the page after successful removal
+                }
+            });
+        });
+    });
+</script>
+
+
+
+{% endblock content %}
