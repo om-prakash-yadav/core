@@ -18,7 +18,7 @@
         </li>
         <li data-username="dashboard Default Ecommerce CRM Analytics Crypto Project" class="nav-item {% if 'index' in segment %}active{% endif %}">
           {% if request.user.is_superuser %}
-          <a href="{% url 'admin:index' %}" class="nav-link ">
+          <a href="{% url 'index' %}" class="nav-link ">
           {% else %}
           <a href="{% url 'index' %}" class="nav-link ">
           {% endif %}
