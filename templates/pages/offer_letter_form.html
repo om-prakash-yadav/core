@@ -25,7 +25,7 @@
       <div class="card p-4">
         <div class="card-body">
           {% load crispy_forms_tags %}
-          <form method="post" class="needs-validation" novalidate>
+          <form  method="post" class="needs-validation" novalidate  >
             {% csrf_token %}
             <div class="mb-3">{{ form.candidate_name|as_crispy_field }}</div>
             <div class="mb-3">{{ form.candidate_city|as_crispy_field }}</div>

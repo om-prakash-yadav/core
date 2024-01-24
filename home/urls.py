@@ -1,5 +1,7 @@
 from django.urls import path
 from django.contrib.auth import views as auth_views
+from django.conf import settings
+from django.conf.urls.static import static
 
 from . import views
 from .views import InvoiceListView, createInvoice, view_PDF, generate_PDF
@@ -17,3 +19,5 @@ urlpatterns = [
   path('generate-offer-letter/', views.generate_offer_letter, name='generate_offer_letter'),
   path('generate_offer_letter_content/', views.generate_offer_letter_content, name='generate_offer_letter_content'),
 ]
+
+urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

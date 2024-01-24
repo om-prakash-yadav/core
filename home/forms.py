@@ -114,7 +114,7 @@ class AppointmentLetterForm(forms.ModelForm):
             'employee_country': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Country'}),
             'employee_phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone'}),
             'employee_email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
-            'joining_date': forms.DateInput(attrs={'class': 'form-control', 'placeholder': 'Joining Date'}),
+            'joining_date': forms.DateInput(attrs={'type': 'date','class': 'form-control', 'placeholder': 'Joining Date'}),
             'designation': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Designation'}),
             'department': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Department'}),
             'salary': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Salary'}),

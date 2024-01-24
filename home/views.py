@@ -51,8 +51,11 @@ def generate_offer_letter(request):
         form = OfferLetterForm(request.POST)
         if form.is_valid():
             form.save()
+            print("Form saved successfully")
             # Redirect to a success page or another view after successful form submission
-            return redirect('success_page')  # Replace 'success_page' with the name of your success page view
+            return redirect('generate_offer_letter')  # Replace 'success_page' with the name of your success page view
+        else:
+            print(form.errors)
     else:
         form = OfferLetterForm()
         try:
@@ -69,7 +72,7 @@ def generate_introductory_letter(request):
         if form.is_valid():
             form.save()
             # Redirect to a success page or another view after successful form submission
-            return redirect('success_page')  # Replace 'success_page' with the name of your success page view
+            return redirect('generate_introductory_letter')  # Replace 'success_page' with the name of your success page view
     else:
         form = OfferLetterForm()
     return render(request, 'pages/introductory_letter_form.html', {'form': form})
